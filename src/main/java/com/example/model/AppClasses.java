@@ -1,4 +1,4 @@
-package com.example;
+package com.example.model;
 
 public class AppClasses {
     public static void main(String[] args) {
