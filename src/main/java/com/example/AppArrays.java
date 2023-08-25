@@ -35,6 +35,6 @@ public class AppArrays {
             System.out.println();
         }
   
-
+ 
     }
 }

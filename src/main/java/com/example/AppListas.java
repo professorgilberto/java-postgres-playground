@@ -23,7 +23,7 @@ public class AppListas {
         for (var x:listaClientes){
             System.out.println(x);
 
-
+ 
 
         }
 
