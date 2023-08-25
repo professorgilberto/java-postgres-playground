@@ -1,17 +1,20 @@
 package com.example;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import.util.List;
+import java.util.List;
+
+//import java.util.ArrayList;
+//import java.util.LinkedList;
+//import util.List;
 
 public class AppListas {
     public static void main(String[] args) {
-        Cliente[] vetorClientes = new Cliente[5]
-        List<Cliente> listaClientes = new ArrayList<>()
+        //Cliente[] vetorClientes = new Cliente[5];
+        List<Cliente> listaClientes = new ArrayList<>();
 
-        var cliente1= new(Cliente();
+        var cliente1= new Cliente();
         cliente1.setNome("asdasdfasd");
-        var cliente2= new(Cliente();
+        var cliente2= new Cliente();
         cliente2.setNome("asdasgfgsdfasd");
         
         listaClientes.add(cliente1);
@@ -22,7 +25,7 @@ public class AppListas {
 
 
 
-        )
+        }
 
         listaClientes.remove(0);
 

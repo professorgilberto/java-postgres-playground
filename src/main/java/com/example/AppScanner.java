@@ -9,6 +9,7 @@ public class AppScanner{
     System.out.println("Digite o nome");
     cliente.setNome(scanner.nextLine());
     System.out.println("nome "+cliente.getNome());
+    scanner.close();
   
 
 

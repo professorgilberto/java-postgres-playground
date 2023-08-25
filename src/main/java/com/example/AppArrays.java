@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class AppArrays {
     public static void main(String[] args) {
         int x[]={1,2,3} ;
-        int y[][]=new int[3][3];
+        //int y[][]=new int[3][3];
         int z[][]={{1,2,3},{2,3,4,5}};   
          
         x[0]=1;
