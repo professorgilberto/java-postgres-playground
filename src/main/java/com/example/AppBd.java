@@ -12,13 +12,13 @@ public class AppBd {
         var conn = DriverManager.getConnection("jdbc:sqlite:banco.db");
         System.out.println("conexao ok");
         var statement = conn.createStatement();
-        statement.executeUpdate("DROP TABLE IF EXISTS terminalroot");
-        statement.executeUpdate("CREATE TABLE terminalroot (id INTEGER, name STRING)");
-        statement.executeUpdate("INSERT INTO terminalroot VALUES(1, 'Marcos Oliveira')");
-        statement.executeUpdate("INSERT INTO terminalroot VALUES(2, 'James Gosling')");
+        statement.executeUpdate("DROP TABLE IF EXISTS Produtos");
+        statement.executeUpdate("CREATE TABLE Produtos (id INTEGER, nome STRING, Marca STRING, Valor Numeric)");
+        statement.executeUpdate("INSERT INTO Produtos VALUES(1, 'Blevers1', 'Marca1',12.3)");
+        statement.executeUpdate("INSERT INTO Produtos VALUES(2, 'Blevers2', 'Marca2',22.3)");
         System.out.println("Antes Update");
         exibeBD(statement);
-        statement.executeUpdate("UPDATE terminalroot SET name = 'Blevers' WHERE id=1");
+        statement.executeUpdate("UPDATE Produtos SET nome = 'BleversUPD' WHERE id=1");
         System.out.println("Depois Update");
         exibeBD(statement); 
 
@@ -35,11 +35,14 @@ public class AppBd {
     static void exibeBD(final Statement statement){
     
     try {
-        final ResultSet rs = statement.executeQuery("SELECT * FROM terminalroot");
+        final ResultSet rs = statement.executeQuery("SELECT * FROM Produtos");
         while(rs.next()) {
           // Ler os dados inseridos
-          System.out.println("NOME DO CARA  : " + rs.getString("name"));
           System.out.println("IDENTIFICAÇÃO : " + rs.getInt("id")); 
+          System.out.println("NOME DO PRODUTO  : " + rs.getString("nome"));
+          System.out.println("MARCA  : " + rs.getString("MARCA"));
+          System.out.println("VALOR  : " + rs.getDouble("Valor"));
+
         }
     } catch (SQLException e) {
         System.err.println("Erro na conexão" + e.getMessage());
