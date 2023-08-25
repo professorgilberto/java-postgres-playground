@@ -37,28 +37,37 @@ public class AppBdRef {
 
             produto4.setId(4);
             produto4.setMarca("marca4");
+            produto4.setNome("nome4");            
             produto4.setValor(42.2);
 
             insereProduto(conn,produto1);
             insereProduto(conn,produto2);
             insereProduto(conn,produto3);            
-            insereProduto(conn,produto4);
 
-            var statement = conn.createStatement();
+
+            //var statement = conn.createStatement();
             //statement.executeUpdate("INSERT INTO Produtos (NOME,MARCA,VALOR) VALUES('Blevers1', 'Marca1',12.3);");
             //statement.executeUpdate("INSERT INTO Produtos (NOME,MARCA,VALOR) VALUES('Blevers2', 'Marca2',22.3);");
             //statement.executeUpdate("INSERT INTO Produtos (NOME,MARCA,VALOR) VALUES('Blevers3', 'Marca3',33.3);");
             exibeMSG("Antes Update");
-            exibeBD(statement);
-            statement.executeUpdate("UPDATE Produtos SET nome = 'BleversUPD' WHERE id=1;");
+            exibeBD(conn,"produtos");
+
+            produto1.setMarca("marcaBlevers");
+            produto1.setNome("nomeBlevers");
+            produto1.setValor(1232.2);
+            AtualizaProduto(conn,produto1);
+
+            //statement.executeUpdate("UPDATE Produtos SET nome = 'BleversUPD' WHERE id=1;");
             exibeMSG("Depois Update");
-            exibeBD(statement); 
-            statement.executeUpdate("DELETE from Produtos WHERE id=2;");
+            exibeBD(conn,"produtos");
+            //statement.executeUpdate("DELETE from Produtos WHERE id=2;");
+            ApagaProduto(conn,produto2);
             exibeMSG("Depois Delete");
-            exibeBD(statement); 
-            statement.executeUpdate("INSERT INTO Produtos (NOME,MARCA,VALOR) VALUES('Blevers4', 'Marca4',44.3);");
+            exibeBD(conn,"produtos");
+            //statement.executeUpdate("INSERT INTO Produtos (NOME,MARCA,VALOR) VALUES('Blevers4', 'Marca4',44.3);");
+            insereProduto(conn,produto4);
             exibeMSG("Depois Insert");
-            exibeBD(statement); 
+            exibeBD(conn,"produtos");
     
             conn.close();
             }
@@ -67,6 +76,32 @@ public class AppBdRef {
         }
 
     }
+
+    private void AtualizaProduto(Connection conn, Produtos produto) {
+        String sql = "Update PRODUTOS set Nome=? , Marca=? ,valor=? where id=?; ";
+        try (var statement=conn.prepareStatement(sql);) {
+            statement.setString(1,produto.getNome());
+            statement.setString(2,produto.getMarca());
+            statement.setDouble(3,produto.getValor());
+            statement.setLong(4,produto.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro na Atualização "+e.getMessage());
+        }
+
+    }
+
+    private void ApagaProduto(Connection conn, Produtos produto) {
+        String sql = "Delete FROM Produtos where id=?;";
+        try (var statement=conn.prepareStatement(sql);) {
+            statement.setLong(1,produto.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao Apagar Registro "+e.getMessage());
+        }
+
+    }
+
 
     private void insereProduto(Connection conn, Produtos produto) {
 
@@ -91,22 +126,53 @@ public class AppBdRef {
 
 
 
-    private static void exibeBD(final Statement statement){
+    private static void exibeBD(Connection conn,String Tabela){
     
     try {
-        final ResultSet rs = statement.executeQuery("SELECT * FROM Produtos");
+        var sql="SELECT * FROM " + Tabela;
+        var statement=conn.createStatement();
+        final ResultSet rs = statement.executeQuery(sql);
+        int cols=rs.getMetaData().getColumnCount();
+        for (int i = 1; i < cols+1; i++) {
+            System.out.printf("%-15s | ",rs.getMetaData().getColumnName(i));
+          }
+          System.out.println();          
         while(rs.next()) {
-          // Ler os dados inseridos
-          System.out.println("IDENTIFICAÇÃO : " + rs.getInt("id")); 
-          System.out.println("NOME DO PRODUTO  : " + rs.getString("nome"));
-          System.out.println("MARCA  : " + rs.getString("MARCA"));
-          System.out.println("VALOR  : " + rs.getDouble("Valor"));
+          for (int i = 1; i < cols+1; i++) {
+            System.out.printf("%-15s | ",rs.getString(i));
+          }
+          System.out.println();
+
+
+          //System.out.println("IDENTIFICAÇÃO : " + rs.getInt("id")); 
+          //System.out.println("NOME DO PRODUTO  : " + rs.getString("nome"));
+          //System.out.println("MARCA  : " + rs.getString("MARCA"));
+          //System.out.println("VALOR  : " + rs.getDouble("Valor"));
 
         }
     } catch (SQLException e) {
         System.err.println("Erro na conexão" + e.getMessage());
     }
     }
+    private static void exibeTabela(final Statement statement,String Tabela){
+    
+        try {
+            final ResultSet rs = statement.executeQuery("SELECT * FROM Produtos");
+            while(rs.next()) {
+              // Ler os dados inseridos
+              System.out.println("IDENTIFICAÇÃO : " + rs.getInt("id")); 
+              System.out.println("NOME DO PRODUTO  : " + rs.getString("nome"));
+              System.out.println("MARCA  : " + rs.getString("MARCA"));
+              System.out.println("VALOR  : " + rs.getDouble("Valor"));
+    
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro na conexão" + e.getMessage());
+        }
+        }
+
+
+
     private static void exibeMSG(String MSG){
             System.out.println();   
             System.out.println(MSG);
